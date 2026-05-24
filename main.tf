@@ -2,6 +2,14 @@ locals {
   is_dhcp = var.ip_address == "dhcp"
 }
 
+resource "proxmox_download_file" "template" {
+  node_name    = var.node_name
+  content_type = "vztmpl"
+  datastore_id = var.template_datastore_id
+  file_name    = basename(var.template_url)
+  url          = var.template_url
+}
+
 resource "proxmox_virtual_environment_container" "this" {
   description  = var.description
   node_name    = var.node_name
@@ -49,7 +57,7 @@ resource "proxmox_virtual_environment_container" "this" {
   }
 
   operating_system {
-    template_file_id = var.template_file_id
+    template_file_id = proxmox_download_file.template.id
     type             = var.os_type
   }
 }

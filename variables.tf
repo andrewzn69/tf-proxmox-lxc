@@ -33,9 +33,20 @@ variable "tags" {
   default     = []
 }
 
-variable "template_file_id" {
+variable "template_datastore_id" {
   type        = string
-  description = "OS template file ID in format <datastore_id>:<content_type>/<file_name>"
+  description = "Proxmox datastore to download the container template into"
+  default     = "local"
+}
+
+variable "template_url" {
+  type        = string
+  description = "URL of the LXC container template to download"
+
+  validation {
+    condition     = can(regex("^https?://", var.template_url))
+    error_message = "template_url must be a valid http or https URL"
+  }
 }
 
 variable "vm_id" {
