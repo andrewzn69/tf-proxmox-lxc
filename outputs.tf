@@ -5,5 +5,5 @@ output "id" {
 
 output "ipv4_address" {
   description = "IPv4 address of the container"
-  value       = proxmox_virtual_environment_container.this.ipv4
+  value       = proxmox_virtual_environment_container.this.ipv4[var.network_interface_name]
 }
